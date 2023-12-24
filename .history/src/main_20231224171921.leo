@@ -1,10 +1,11 @@
-// The 'zktoken' program.
-program zktoken.aleo {
+// The 'templateankara' program.
+program templateankara.aleo {
 
     mapping account: address => u64;
 
     record token {
         owner:address,
+
         amount: u64
     }
 
@@ -84,7 +85,7 @@ program zktoken.aleo {
     }
 
     finalize transfer_public_to_private(public sender:address, public amount:u64) {
-        let sender_amount: u64 = Mapping::get_or_use(account,sender ,0u64);
+        let sender_amount: u64 = Mapping::get_or_use(account,sender ,amount);
         Mapping::set(account,sender ,sender_amount - amount );
     }
 }

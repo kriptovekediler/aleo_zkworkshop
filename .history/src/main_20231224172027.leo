@@ -1,10 +1,11 @@
-// The 'zktoken' program.
-program zktoken.aleo {
+// The 'templateankara' program.
+program templateankara.aleo {
 
     mapping account: address => u64;
 
     record token {
         owner:address,
+
         amount: u64
     }
 

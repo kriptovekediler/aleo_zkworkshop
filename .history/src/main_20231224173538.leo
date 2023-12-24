@@ -1,4 +1,4 @@
-// The 'zktoken' program.
+// The 'templateankara' program.
 program zktoken.aleo {
 
     mapping account: address => u64;

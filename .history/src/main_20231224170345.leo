@@ -1,10 +1,11 @@
-// The 'zktoken' program.
-program zktoken.aleo {
+// The 'templateankara' program.
+program templateankara.aleo {
 
     mapping account: address => u64;
 
     record token {
         owner:address,
+
         amount: u64
     }
 
@@ -34,7 +35,7 @@ program zktoken.aleo {
         Mapping::set(account,sender , sender_amount-amount);
 
         let receiver_amount:u64 = Mapping::get_or_use(account, receiver, 0u64);
-        Mapping::set(account, receiver,receiver_amount + amount );
+        Mapping::set(account, receiver,0u64 );
     }
 
     transition transfer_private(sender:token,receiver:address, amount:u64) -> (token, token) {
@@ -45,46 +46,9 @@ program zktoken.aleo {
             amount:difference
         };
 
-        let transferred: token = token {
+        let transferred:token = token {
             owner:receiver,
             amount:amount,
-        };
-
-        return (remaining, transferred);
-    }
-
-    transition transfer_private_to_public(sender:token, public receiver: address,public amount:u64) -> token {
-        let difference:u64 = sender.amount - amount;
-
-        let remaining: token = token {
-            owner:sender.owner,
-            amount:difference
-        };
-
-        let transferred: token = token {
-            owner:receiver,
-            amount:amount,
-        };
-
-        return remaining then finalize(receiver, amount);
-    }
-
-    finalize transfer_private_to_public(public receiver: address, public amount: u64) {
-        let receiver_amount: u64 = Mapping::get_or_use(account,receiver ,0u64);
-        Mapping::set(account, receiver , receiver_amount + amount );
-    }
-
-    transition transfer_public_to_private(public receiver:address, amount:u64 ) -> token {
-        let transferred: token = token {
-            owner:receiver,
-            amount:amount
-        };
-
-        return transferred then finalize(self.caller,amount);
-    }
-
-    finalize transfer_public_to_private(public sender:address, public amount:u64) {
-        let sender_amount: u64 = Mapping::get_or_use(account,sender ,0u64);
-        Mapping::set(account,sender ,sender_amount - amount );
+        }
     }
 }
